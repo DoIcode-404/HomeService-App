@@ -10,11 +10,11 @@ from datetime import datetime, timedelta
 from typing import Optional
 import logging
 
-from pydantic_schemas.kundali_schema import KundaliRequest, KundaliResponse
-from services.transit_calculator import TransitCalculator
-from rule_engine.rules.transit_rules import TransitRules
-from pydantic_schemas.api_response import APIResponse, success_response, error_response
-from services.logic import generate_kundali_logic
+from server.pydantic_schemas.kundali_schema import KundaliRequest, KundaliResponse
+from server.services.transit_calculator import TransitCalculator
+from server.rule_engine.rules.transit_rules import TransitRules
+from server.pydantic_schemas.api_response import APIResponse, success_response, error_response
+from server.services.logic import generate_kundali_logic
 
 logger = logging.getLogger(__name__)
 

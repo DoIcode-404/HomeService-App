@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import Dict, List, Any, Optional
+from pydantic import BaseModel, Field
+from typing import Dict, List, Any, Optional, Union
 from datetime import datetime
 
 # Request Schemas
@@ -79,13 +79,36 @@ class PlanetaryStrength(BaseModel):
     total_strength: float = Field(..., description="Total strength (0-60)")
     strength_percentage: float = Field(..., description="Strength as percentage (0-100)")
     strength_status: str = Field(..., description="Status: Very Strong, Strong, Moderate, Weak, Very Weak")
-    breakdown: PlanetaryStrengthBreakdown
+    breakdown: Optional[Union[PlanetaryStrengthBreakdown, Dict[str, Any]]] = Field(None, description="Breakdown of strengths")
     is_strong: bool = Field(..., description="Is planet strong (>70%)")
     capacity: str = Field(..., description="Planet's capacity to give results")
 
+class YogaAnalysis(BaseModel):
+    yoga_name: str = Field(..., description="Name of the yoga")
+    house: Optional[int] = None
+    planets: List[str] = Field(..., description="Planets involved")
+    strength: float = Field(..., description="Strength of yoga (0-100)")
+    benefic: bool = Field(..., description="Is yoga benefic")
+
+class HouseLordStrength(BaseModel):
+    house: int = Field(..., description="House number")
+    lord: str = Field(..., description="House lord planet")
+    strength_percentage: float = Field(..., description="Lord's strength (0-100)")
+    status: str = Field(..., description="Strong/Moderate/Weak")
+
+class YogaInfo(BaseModel):
+    total_yoga_count: int = Field(..., description="Total yogas in chart")
+    benefic_yoga_count: int = Field(..., description="Benefic yogas")
+    malefic_yoga_count: int = Field(..., description="Malefic yogas")
+    neutral_yoga_count: int = Field(..., description="Neutral yogas")
+    yogas: Optional[List[YogaAnalysis]] = None
+
 class ShaBalaInfo(BaseModel):
-    planetary_strengths: Dict[str, PlanetaryStrength]
+    planetary_strengths: Optional[Dict[str, Any]] = Field(None, description="Planetary strength data")
     chart_strength_assessment: Optional[Dict[str, Any]] = None
+    house_lord_strengths: Optional[Dict[int, HouseLordStrength]] = None
+    yogas: Optional[YogaInfo] = None
+    aspect_strengths: Optional[Dict[int, float]] = None
 
 # Divisional Charts Schemas
 class VargaChart(BaseModel):

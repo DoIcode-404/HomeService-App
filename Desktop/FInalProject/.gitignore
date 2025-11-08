@@ -1,0 +1,101 @@
+# Environment Variables - SENSITIVE
+.env
+.env.local
+.env.production
+.env.*.local
+
+# IDE & Editor
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+server/venv/
+
+# Database & Data
+*.db
+*.sqlite
+*.sqlite3
+server/ml/trained_models/
+
+# Logs & Temp
+*.log
+*.pot
+*.mo
+test_results.txt
+nul
+
+# ML & Data Files
+training_data.csv
+evaluation_results.json
+validation_report.json
+data_leakage_analysis.json
+
+# Documentation - Generated
+API_DOCUMENTATION.md
+IMPLEMENTATION_STATUS.md
+CURRENT_STATUS.md
+DATA_QUALITY_FIX_SUMMARY.md
+DATA_LEAKAGE_SUMMARY.txt
+BEFORE_AFTER_COMPARISON.txt
+
+# OS Files
+Thumbs.db
+.DS_Store
+.directory
+
+# Credentials & Keys
+*.pem
+*.key
+*.pfx
+credentials.json
+token.json
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+test-results/
+
+# Node & Frontend (if applicable)
+node_modules/
+*.mp3
+*.mp4
+
+# Project specific
+client/
+server/swisseph_data/

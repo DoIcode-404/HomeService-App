@@ -11,7 +11,7 @@ Author: Astrology Backend
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
-from utils.astro_utils import calculate_planet_positions, get_zodiac_sign, get_nakshatra
+from server.utils.astro_utils import calculate_planet_positions, get_zodiac_sign, get_nakshatra
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ class TransitCalculator:
         """
         try:
             # Get current planet positions
-            from utils.astro_utils import get_julian_day_from_date
+            from server.utils.astro_utils import get_julian_day_from_date
             jd = get_julian_day_from_date(self.transit_date)
             current_positions = calculate_planet_positions(jd)
 

@@ -2,8 +2,8 @@ from datetime import datetime
 import logging
 from fastapi import HTTPException
 
-from ml.feature_generator import KundaliMLDataGenerator
-from pydantic_schemas.kundali_schema import (
+from server.ml.feature_generator import KundaliMLDataGenerator
+from server.pydantic_schemas.kundali_schema import (
     KundaliRequest,
     KundaliResponse,
     Ascendant,
@@ -14,7 +14,7 @@ from pydantic_schemas.kundali_schema import (
     DivisionalChartsInfo,
 )
 
-from utils.astro_utils import (
+from server.utils.astro_utils import (
     calculate_ascendant,
     get_nakshatra,
     calculate_planet_positions,
@@ -24,12 +24,13 @@ from utils.astro_utils import (
     get_julian_day_from_birth_details,
 )
 
-from services.dasha_calculator import DashaCalculator
-from rule_engine.rules.dasha_rules import DashaRules
-from utils.strength_calculator import StrengthCalculator
-from utils.varga_calculator import VargaCalculator
-from rule_engine.rules.strength_rules import StrengthRules
-from rule_engine.rules.varga_rules import VargaRules
+from server.services.dasha_calculator import DashaCalculator
+from server.rule_engine.rules.dasha_rules import DashaRules
+from server.utils.strength_calculator import StrengthCalculator
+from server.utils.varga_calculator import VargaCalculator
+from server.utils.shad_bala_enhancer import EnhancedShadBalaCalculator
+from server.rule_engine.rules.strength_rules import StrengthRules
+from server.rule_engine.rules.varga_rules import VargaRules
 
 logger = logging.getLogger(__name__)
 
@@ -120,16 +121,45 @@ async def generate_kundali_logic(birth_details: KundaliRequest) -> KundaliRespon
             logger.warning(f"Could not calculate Dasha information: {str(e)}")
             dasha_info = None
 
-        # Calculate Shad Bala (Six Strength Measures)
+        # Calculate Shad Bala (Six Strength Measures) with enhancements
         shad_bala_info = None
         try:
             strength_calculator = StrengthCalculator(
                 planets_info=planet_positions,
-                ascendant_degree=asc_deg_normalized,
-                birth_date=datetime.strptime(birth_details.birthDate, "%Y-%m-%d"),
-                birth_time=birth_details.birthTime
+                ascendant_sign=ascendant.index,
+                birth_date=datetime.strptime(birth_details.birthDate, "%Y-%m-%d")
             )
             shad_bala_data = strength_calculator.calculate_all_strengths()
+
+            # Enhance with yoga and house lord strengths
+            try:
+                enhancer = EnhancedShadBalaCalculator(
+                    ascendant_degree=asc_deg_normalized,
+                    planet_positions=planet_positions,
+                    house_assignments=house_assignments
+                )
+
+                # Add house lord strengths
+                house_lord_strengths = enhancer.calculate_house_lord_strengths(
+                    shad_bala_data.get('planetary_strengths', {})
+                )
+
+                # Add yoga analysis
+                yogas = enhancer.calculate_yogas(
+                    shad_bala_data.get('planetary_strengths', {})
+                )
+
+                # Add aspect strengths
+                aspect_strengths = enhancer.calculate_aspect_strengths()
+
+                shad_bala_data['house_lord_strengths'] = house_lord_strengths
+                shad_bala_data['yogas'] = yogas
+                shad_bala_data['aspect_strengths'] = aspect_strengths
+
+                logger.info("Enhanced Shad Bala with house lord strengths, yogas, and aspects")
+            except Exception as e:
+                logger.warning(f"Could not enhance Shad Bala: {str(e)}")
+
             shad_bala_info = ShaBalaInfo(**shad_bala_data)
             logger.info("Successfully calculated Shad Bala (Planetary Strengths)")
         except Exception as e:

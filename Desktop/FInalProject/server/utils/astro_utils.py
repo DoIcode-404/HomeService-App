@@ -1,7 +1,7 @@
 # from datetime import datetime
 # import pytz
 # import swisseph
-# from pydantic_schemas.kundali_schema import KundaliRequest
+# from server.pydantic_schemas.kundali_schema import KundaliRequest
 
 
 # def get_julian_day_from_birth_details(birth_details: KundaliRequest) -> float:
@@ -134,7 +134,7 @@
 # from datetime import datetime
 # import pytz
 # import swisseph
-# from pydantic_schemas.kundali_schema import KundaliRequest
+# from server.pydantic_schemas.kundali_schema import KundaliRequest
 # import logging
 
 # # Configure logging for debugging
@@ -532,7 +532,7 @@
 from datetime import datetime
 import pytz
 import swisseph
-from pydantic_schemas.kundali_schema import KundaliRequest
+from server.pydantic_schemas.kundali_schema import KundaliRequest
 import logging
 
 # Configure logging for debugging

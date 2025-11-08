@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from datetime import datetime
 
-from server.routes import export, kundali, auth, transits, ml_predictions
+from server.routes import export, kundali, auth, transits, ml_predictions, predictions
 from server.utils.swisseph_setup import setup_ephemeris
 from server.middleware.error_handler import setup_error_handlers, get_error_tracker
 from server.pydantic_schemas.api_response import APIResponse, ResponseStatus, success_response
@@ -48,6 +48,7 @@ setup_error_handlers(app)
 # Include routers
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(kundali.router, prefix="/kundali", tags=["Kundali"])
+app.include_router(predictions.router, prefix="/predictions", tags=["Predictions"])
 app.include_router(export.router, prefix="/export", tags=["Export"])
 app.include_router(transits.router, prefix="/transits", tags=["Transits"])
 app.include_router(ml_predictions.router, prefix="/ml")

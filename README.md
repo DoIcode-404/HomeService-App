@@ -26,22 +26,26 @@ A comprehensive Flutter-based home service booking application that connects use
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/DoIcode-404/HomeService-App.git
 cd HomeService-App
 ```
 
 2. Navigate to the client directory:
+
 ```bash
 cd client
 ```
 
 3. Install dependencies:
+
 ```bash
 flutter pub get
 ```
 
 4. Run the app:
+
 ```bash
 flutter run
 ```
@@ -71,7 +75,3 @@ client/
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License.
